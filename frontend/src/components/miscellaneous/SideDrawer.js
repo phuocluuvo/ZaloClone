@@ -116,34 +116,36 @@ function SideDrawer() {
   return (
     <>
       <Box
-        style={{ display: "flex", flexDirection: "row" }}
-        flexDirection="row"
+        style={{ display: "flex", flexDirection: "column-reverse" }}
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
-        w="100%"
+        bg="#0894fc"
+        w="75px"
         p="5px 10px 5px 10px"
-        borderWidth="5px"
       >
         <Tooltip
           label="Search users to chat with"
           hasArrow
           placement="bottom-end"
         >
-          <Button variant="ghost" onClick={onOpen}>
+          <Button
+            bgColor="transparent"
+            _hover={{
+              bgColor: "transparent",
+            }}
+            _active={{
+              bgColor: "transparent",
+            }}
+            onClick={onOpen}
+            color="white"
+          >
             <i className="fa fa-search" aria-hidden="true"></i>
-            <Text d={{ base: "none", md: "flex" }} px="4">
-              Search User
-            </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work Sans">
-          CHAT-CHIT
-        </Text>
         <div>
           <Menu>
             <MenuButton p={1} position="relative">
-              <BellIcon fontSize={"2xl"} m={1} />
+              <BellIcon fontSize={"2xl"} mx="auto" color="white" />
               {notification.length > 0 && (
                 <Text
                   position="absolute"
@@ -181,10 +183,21 @@ function SideDrawer() {
               ))}
             </MenuList>
             <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton
+                as={Button}
+                bgColor="transparent"
+                _hover={{
+                  bgColor: "transparent",
+                }}
+                _active={{
+                  bgColor: "transparent",
+                }}
+              >
                 <Avatar
-                  size="sm"
+                  size="md"
                   cursor="pointer"
+                  borderWidth={1}
+                  borderRadius="full"
                   name={user.name}
                   src={user.pic}
                 />

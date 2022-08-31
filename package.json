@@ -8,7 +8,7 @@
     "heroku-postbuild": "cd frontend && npm install --only=dev && npm install --force && npm run build"
   },
   "engines": {
-    "node": "8.9.2"
+    "node": "16.x"
   },
   "author": "Luu Vo",
   "license": "ISC",
@@ -18,13 +18,16 @@
     "@emotion/styled": "^11.10.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
     "framer-motion": "^7.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
+    "path": "^0.12.7",
     "react-router-dom": "^6.3.0",
     "socket.io": "^4.5.1"
   }

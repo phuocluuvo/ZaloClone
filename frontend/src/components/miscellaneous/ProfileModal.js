@@ -19,10 +19,10 @@ function ProfileModal({ user, children }) {
 
   return (
     <>
-      {children ? (
-        <span onClick={onOpen}>{children}</span>
-      ) : (
-        <IconButton onClick={onOpen} icon={<ViewIcon />} d={{ base: "flex" }} />
+      {children && (
+        <span onClick={onOpen} style={{ cursor: "pointer" }}>
+          {children}
+        </span>
       )}
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

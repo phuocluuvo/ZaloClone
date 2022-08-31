@@ -21,7 +21,7 @@ function UserBadgeItem({ _user, handleFunction }) {
       onClick={handleFunction}
       bg={`red `}
     >
-      {_user.name}
+      {_user?.name}
       <CloseIcon pl={1} />
     </Box>
   );

@@ -1,5 +1,6 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Box,
   FormControl,
   IconButton,
@@ -18,7 +19,7 @@ import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
 import io from "socket.io-client";
 import animationData from "../animations/52671-typing-animation-in-chat.json";
-const ENDPOINT = "https://mern-chat-chit.herokuapp.com/";
+const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -26,7 +27,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
-
+  const [hoverring, setHoverring] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const toast = useToast();
@@ -157,37 +158,96 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     <>
       {selectedChat ? (
         <>
-          <Text
-            fontSize={{ base: "28px", md: "30px" }}
-            pb={3}
-            px={2}
-            w="100%"
-            display="flex"
-            justifyContent={{ base: "space-between" }}
-            alignItems="center"
-            fontFamily="Work Sans"
-          >
-            <IconButton
-              display={{ base: "flex", md: "none" }}
-              icon={<ArrowBackIcon />}
-              onClick={() => setSelectedChat("")}
-            />
-            {!selectedChat.isGroupChat ? (
-              <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderInfo(user, selectedChat.users)} />
-              </>
-            ) : (
-              <>
-                {selectedChat.chatName.toUpperCase()}
-                <UpdateGroupChatModal
-                  fetchAgain={fetchAgain}
-                  setFetchAgain={setFetchAgain}
-                  fetchMessages={fetchMessages}
-                />
-              </>
+          <div style={{ width: "100%", padding: "7px 5px" }}>
+            <Text
+              fontSize={{ base: "18px", md: "20px" }}
+              fontWeight="bold"
+              w="100%"
+              display="flex"
+              alignContent="center"
+              fontFamily="Work Sans"
+            >
+              <IconButton
+                bg="white"
+                ml={5}
+                mr={2}
+                my={2}
+                w="30px"
+                h="30px"
+                borderRadius="full"
+                display={{ base: "flex", md: "none" }}
+                icon={<ChevronLeftIcon />}
+                size="12px"
+                onClick={() => setSelectedChat("")}
+              />
+              <Box>
+                {selectedChat.isGroupChat === false && (
+                  <Avatar
+                    size="md"
+                    cursor="pointer"
+                    my="auto"
+                    mr={2}
+                    name={
+                      selectedChat.users[0]._id === user._id
+                        ? selectedChat.users[1]?.pic
+                        : selectedChat.users[0]?.pic
+                    }
+                    src={
+                      selectedChat.users[0]._id === user._id
+                        ? selectedChat.users[1]?.pic
+                        : selectedChat.users[0]?.pic
+                    }
+                  />
+                )}
+                {!selectedChat.isGroupChat ? (
+                  <>
+                    <ProfileModal
+                      user={getSenderInfo(user, selectedChat.users)}
+                    >
+                      {getSender(user, selectedChat.users)}
+                    </ProfileModal>
+                  </>
+                ) : (
+                  <div
+                    onMouseEnter={() => setHoverring(true)}
+                    onMouseLeave={() => setHoverring(false)}
+                  >
+                    {selectedChat.chatName}
+                    <UpdateGroupChatModal
+                      fetchAgain={fetchAgain}
+                      setFetchAgain={setFetchAgain}
+                      fetchMessages={fetchMessages}
+                    >
+                      <i
+                        class="fa fa-pen"
+                        style={{
+                          display: hoverring ? "" : "none",
+                          fontSize: "15px",
+                          padding: "5px",
+                          borderRadius: "100%",
+                          backgroundColor: "lightgray",
+                        }}
+                        aria-hidden="true"
+                      ></i>
+                    </UpdateGroupChatModal>
+                  </div>
+                )}
+              </Box>
+            </Text>
+            {selectedChat.isGroupChat && (
+              <Text
+                fontSize="md"
+                flex="1"
+                justifySelf="center"
+                alignSelf="self-start"
+                ml={{ base: 14, md: 0 }}
+                mb={{ base: 3, md: 0 }}
+              >
+                {selectedChat.users.length}{" "}
+                <i className="far fa-user" style={{ fontSize: "15px" }}></i>
+              </Text>
             )}
-          </Text>
+          </div>
           <Box
             display="flex"
             flexDir="column"
@@ -196,7 +256,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             bg="#E8E8E8"
             w="100%"
             h="100%"
-            borderRadius="lg"
             overflowY="hidden"
           >
             {loading ? (

@@ -22,7 +22,12 @@ import { ChatState } from "../../context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
 
-function UpdateGroupChatModal({ fetchAgain, setFetchAgain, fetchMessages }) {
+function UpdateGroupChatModal({
+  fetchAgain,
+  setFetchAgain,
+  fetchMessages,
+  children,
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
@@ -192,9 +197,15 @@ function UpdateGroupChatModal({ fetchAgain, setFetchAgain, fetchMessages }) {
   };
   return (
     <>
-      <IconButton display="flex" icon={<ViewIcon />} onClick={onOpen}>
-        Open Modal
-      </IconButton>
+      {children ? (
+        <span onClick={onOpen} style={{ cursor: "pointer" }}>
+          {children}
+        </span>
+      ) : (
+        <IconButton display="flex" icon={<ViewIcon />} onClick={onOpen}>
+          Open Modal
+        </IconButton>
+      )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>

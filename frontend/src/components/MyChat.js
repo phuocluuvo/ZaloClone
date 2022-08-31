@@ -1,5 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
@@ -45,10 +45,9 @@ function MyChat({ fetchAgain, setfetchAgain }) {
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
-      p={3}
+      py={3}
       bg="white"
       w={{ base: "100%", md: "31%" }}
-      borderRadius="lg"
       borderWidth="1px"
     >
       <Box
@@ -75,44 +74,66 @@ function MyChat({ fetchAgain, setfetchAgain }) {
       <Box
         display="flex"
         flexDir="column"
-        p={3}
         bg="#F8F8F8"
         w="100%"
         h="100%"
-        borderRadius="lg"
         overflow="hidden"
       >
         {chats ? (
-          <Stack overflowY="scroll">
+          <Stack overflowY="scroll" spacing={0}>
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                color={selectedChat === chat ? "white" : "black"}
-                px={3}
-                py={2}
-                borderRadius="lg"
+                bg={selectedChat === chat ? "#e4ecfc" : "white"}
+                color={"black"}
+                display="flex"
+                p={4}
                 key={chat._id}
+                transitionDuration="500ms"
+                _hover={{ backgroundColor: "#f4f5f7" }}
               >
-                <Text fontSize="lg">
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
-                </Text>
+                {!chat.isGroupChat && (
+                  <Avatar
+                    size="md"
+                    cursor="pointer"
+                    my="auto"
+                    mr={2}
+                    name={
+                      chat.users[0]._id === user._id
+                        ? chat.users[1]?.pic
+                        : chat.users[0]?.pic
+                    }
+                    src={
+                      chat.users[0]._id === user._id
+                        ? chat.users[1]?.pic
+                        : chat.users[0]?.pic
+                    }
+                  />
+                )}
+                <Box flex={1} justifyContent="start">
+                  <Box display="flex" justifyContent="space-between">
+                    <Text fontSize="lg" noOfLines={[1, 2, 3]} maxW="300px">
+                      {!chat.isGroupChat
+                        ? getSender(loggedUser, chat.users)
+                        : chat.chatName}
+                    </Text>
+                    <Text fontSize="xs" color={"gray"}>
+                      {moment(chat.latestMessage?.createdAt).calendar()}
+                    </Text>
+                  </Box>
 
-                <Text fontSize="sm">
-                  {chat.isGroupChat
-                    ? chat.latestMessage &&
-                      `${chat.latestMessage?.sender.name}: ${chat.latestMessage?.content} `
-                    : chat.latestMessage?.content}{" "}
-                  <Text
-                    fontSize="xs"
-                    color={selectedChat === chat ? "white" : "gray"}
-                  >
-                    {moment(chat.latestMessage?.createdAt).calendar()}
+                  <Text fontSize="sm" color={"gray"}>
+                    {chat.isGroupChat
+                      ? chat.latestMessage &&
+                        `${chat.latestMessage?.sender.name}: ${chat.latestMessage?.content} `
+                      : `${
+                          getSender(loggedUser, chat.users) === user.name
+                            ? "You: " + chat.latestMessage?.content
+                            : chat.latestMessage?.content
+                        }`}{" "}
                   </Text>
-                </Text>
+                </Box>
               </Box>
             ))}
           </Stack>

@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -121,7 +122,18 @@ function GroupChatModal({ children }) {
   };
   return (
     <>
-      <Button onClick={onOpen}>Create new group</Button>
+      <Button
+        onClick={onOpen}
+        position="relative"
+        bg="white"
+        w={10}
+        borderRadius="full"
+      >
+        <i class="fa fa-users"></i>
+        <Text position="absolute" top="0" right="2">
+          +
+        </Text>
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -162,7 +174,7 @@ function GroupChatModal({ children }) {
               <div>loading</div>
             ) : (
               searchResult
-                ?.slice(0, 4)
+                ?.slice(0, 5)
                 .map((user) => (
                   <UserListItem
                     key={user._id}
